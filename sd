@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .main {
+            width: 100%;
+            height: 800px;
+            background-color: #ff9933;
+            display: flex;
+        }
+
+        .drag {
+            width: 20%;
+            background-color: aqua;
+        }
+
+        .drop {
+            width: 80%;
+            background-color: #ff9933;
+        }
+
+        .com_drag {
+            width: 80px;
+            height: 80px;
+            background-color: aliceblue;
+            margin: 10px 10px;
+            margin-left: 45%;
+        }
+
+        .drop {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .com_drop {
+            width: 70vw;
+            height: 100px;
+            background-color: #ff8000;
+            margin: 50px 0px;
+            margin-left: 10vw;
+        }
+
+        .com_drop .com_drag {
+            display: inline-flex;
+            margin: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+
+        var elements = 'a|b|c|d|e|f|g|h';
+        var dropElements = 'a.b.c';
+        var elementArray = elements.split("|");
+        var dropElementsArray = dropElements.split('.');
+        var str = "";
+        var dragID = '';
+        var outputArr1 = [];
+        var outputArr2 = [];
+        var outputArr3 = [];
+
+        var lastdropped;
+        var lastdropped2;
+        var lastdropped3;
+
+        var dl;
+        function outputdata(data1) {
+            $("#value1").val(outputArr1);
+        }
+        function outputdata2(data2) {
+            $("#value2").val(outputArr2);
+        }
+        function outputdata3(data3) {
+            $("#value3").val(outputArr3);
+        }
+        function output1(dl, outputArr1) {
+            for (var i = 0; i < outputArr1.length; i++) {
+                if (outputArr1[i] === dl) {
+                    outputArr1.splice(i, 1)
+                    outputdata(outputArr1);
+                    outputdata2(outputArr1);
+                    outputdata3(outputArr1);
+                }
+            }
+        }
+        function reverse() {
+
+        }
+        $(document).ready(function () {
+            for (let i = 1; i < elementArray.length; i++) {
+                str += '<div class="com_drag" id="drag' + i + '" data-precode="' + i + '">' + i + '</div>';
+            }
+            $(".drag").append(str);
+            $('#drag1,#drag2,#drag3,#drag4,#drag5,#drag6,#drag7,#drag8').draggable({
+                revert: true,
+                stop: function () {
+                    console.log("HELLO")
+                }
+            });
+        });
+        $(function () {
+            $("#drop1").droppable({
+                drop: function (event, ui) {
+                    var el = $(ui.draggable).attr("data-precode");
+                    lastdropped = el;
+                    outputArr1.push(lastdropped);
+                    outputdata(outputArr1);
+                    $(this).append(ui.helper.clone(false).css({
+                        position: 'relative',
+                        left: '0px',
+                        top: '0px'
+                    }).draggable({
+                        stop: function () {
+                            var dl = $(ui.draggable).attr("data-precode");
+                            $('ui.draggable').data("hasBeenDropped", !0)
+                            for (let i = 0; i < outputArr1.length; i++) {
+                                if (outputArr1[i] === dl) {
+                                } else {
+                                    $(ui.draggable).appendTo(".drag").css({
+                                        position: 'relative',
+                                        left: '0px',
+                                        top: '0px'
+                                    });
+                                    $(ui.draggable).remove();
+                                }
+                            }
+                            output1(dl, outputArr1);
+                        }
+                    }));
+                    $(ui.draggable).remove();
+                }
+            });
+            $("#drop2").droppable({
+                drop: function (event, ui) {
+                    var el2 = $(ui.draggable).attr("data-precode");
+                    lastdropped2 = el2;
+                    outputArr2.push(lastdropped2);
+                    outputdata2(outputArr2);
+                    $(this)
+                        .append(ui.helper.clone(false).draggable(true).css({
+                            position: 'relative',
+                            left: '0px',
+                            top: '0px'
+                        }).draggable({
+                            stop: function () {
+                                var dl = $(ui.draggable).attr("data-precode");
+                                $('ui.draggable').data("hasBeenDropped", !0)
+                                $(this).appendTo(".drag").css({
+                                    position: 'relative',
+                                    left: '0px',
+                                    top: '0px'
+                                })
+                                output1(dl, outputArr2);
+                            }
+                        }));
+                    $(ui.draggable).remove();
+                }
+            });
+            $("#drop3").droppable({
+                drop: function (event, ui) {
+                    var el3 = $(ui.draggable).attr("data-precode");
+                    lastdropped3 = el3;
+                    outputArr3.push(lastdropped3);
+                    outputdata3(outputArr3);
+                    $(this)
+                        .append(ui.helper.clone(false).draggable(true).css({
+                            position: 'relative',
+                            left: '0px',
+                            top: '0px'
+                        }).draggable({
+                            stop: function () {
+                                var dl = $(ui.draggable).attr("data-precode");
+                                $('ui.draggable').data("hasBeenDropped", !0)
+                                $(this).appendTo(".drag").css({
+                                    position: 'relative',
+                                    left: '0px',
+                                    top: '0px'
+                                })
+                                output1(dl, outputArr3);
+                            }
+                        }));
+                    $(ui.draggable).remove();
+                }
+            });
+        });     
+    </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="main">
+            <div class="drag">
+            </div>
+            <div class="drop">
+                <div class="com_drop" id="drop1"></div>
+                <div class="com_drop" id="drop2"></div>
+                <div class="com_drop" id="drop3"></div>
+            </div>
+        </div>
+        <div class="backpunch" style="width: 100px;display: flex;">
+            <input type="text" name="" id="value1" value="">
+            <input type="text" name="" id="value2">
+            <input type="text" name="" id="value3">
+        </div>
+    </div>
+</body>
+
+</html>
